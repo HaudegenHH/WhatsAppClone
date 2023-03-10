@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_clone/models/chat_model.dart';
 import 'package:emoji_picker_2/emoji_picker_2.dart';
+
+import 'package:whatsapp_clone/models/chat_model.dart';
+import 'package:whatsapp_clone/widgets/attachment_icon.dart';
+import 'package:whatsapp_clone/helpers/attach_icons_list.dart';
 
 class SingleChatPage extends StatefulWidget {
   final ChatModel chat;
 
-  SingleChatPage({Key? key, required this.chat}) : super(key: key);
+  const SingleChatPage({Key? key, required this.chat}) : super(key: key);
 
   @override
   State<SingleChatPage> createState() => _SingleChatPageState();
@@ -14,7 +17,20 @@ class SingleChatPage extends StatefulWidget {
 class _SingleChatPageState extends State<SingleChatPage> {
   bool showEmojis = false;
   FocusNode focusNode = FocusNode();
-  final TextEditingController _controller = TextEditingController();
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        setState(() {
+          showEmojis = false;
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -24,92 +40,113 @@ class _SingleChatPageState extends State<SingleChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    /*final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;*/
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: buildAppBar(),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Stack(
-          children: [
-            // to have a scrollable List for now i take a..
-            ListView(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width - 60,
-                        child: Card(
-                          margin: const EdgeInsets.only(
-                              left: 5, right: 5, bottom: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: TextFormField(
-                            controller: _controller,
-                            focusNode: focusNode,
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 5,
-                            minLines: 1,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Nachricht",
-                              prefixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    focusNode.unfocus();
-                                    showEmojis = !showEmojis;
-                                  });
-                                },
-                                icon: const Icon(Icons.emoji_emotions),
+        width: width,
+        height: height,
+        child: WillPopScope(
+          child: Stack(
+            children: [
+              // to have a scrollable List for now i take a..
+              ListView(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width - 60,
+                          child: Card(
+                            margin: const EdgeInsets.only(
+                                left: 5, right: 5, bottom: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: TextFormField(
+                              controller: _controller,
+                              focusNode: focusNode,
+                              textAlignVertical: TextAlignVertical.center,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: 5,
+                              minLines: 1,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Nachricht",
+                                prefixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      focusNode.unfocus();
+                                      focusNode.canRequestFocus;
+                                      showEmojis = !showEmojis;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.emoji_emotions),
+                                ),
+                                suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        showModalBottomSheet(
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (_) {
+                                            return attachmentBottomSheet();
+                                          },
+                                        );
+                                      },
+                                      icon: const Icon(Icons.attach_file),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.camera_alt),
+                                    ),
+                                  ],
+                                ),
+                                contentPadding: const EdgeInsets.only(left: 5),
                               ),
-                              suffixIcon: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.attach_file),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.camera_alt),
-                                  ),
-                                ],
-                              ),
-                              contentPadding: const EdgeInsets.only(left: 5),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors.teal,
-                          child: IconButton(
-                            onPressed: () {
-                              print("microphone");
-                            },
-                            icon: const Icon(Icons.mic,
-                                size: 25, color: Colors.white),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors.teal,
+                            child: IconButton(
+                              onPressed: () {
+                                //print("microphone");
+                              },
+                              icon: const Icon(Icons.mic,
+                                  size: 25, color: Colors.white),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                  showEmojis ? selectEmoji() : const SizedBox()
-                ],
+                        )
+                      ],
+                    ),
+                    showEmojis ? selectEmoji() : const SizedBox()
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          onWillPop: () {
+            if (showEmojis) {
+              setState(() {
+                showEmojis = false;
+              });
+            } else {
+              Navigator.of(context).pop();
+            }
+            return Future.value(false);
+          },
         ),
       ),
     );
@@ -206,12 +243,34 @@ class _SingleChatPageState extends State<SingleChatPage> {
     );
   }
 
+  Widget attachmentBottomSheet() {
+    return Container(
+      height: 280,
+      width: MediaQuery.of(context).size.width,
+      child: Card(
+        margin: const EdgeInsets.all(20),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
+          child: GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
+            itemCount: attachIcons.length,
+            itemBuilder: (context, index) {
+              return attachIcons[index];
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget selectEmoji() {
     return EmojiPicker2(
       rows: 3,
       columns: 7,
       onEmojiSelected: (emoji, category) {
-        print(emoji);
         setState(() {
           _controller.text += emoji.emoji;
         });
