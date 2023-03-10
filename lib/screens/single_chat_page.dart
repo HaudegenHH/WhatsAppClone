@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/models/chat_model.dart';
+import 'package:emoji_picker_2/emoji_picker_2.dart';
 
 class SingleChatPage extends StatefulWidget {
   final ChatModel chat;
@@ -11,6 +12,16 @@ class SingleChatPage extends StatefulWidget {
 }
 
 class _SingleChatPageState extends State<SingleChatPage> {
+  bool showEmojis = false;
+  FocusNode focusNode = FocusNode();
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     /*final width = MediaQuery.of(context).size.width;
@@ -28,61 +39,73 @@ class _SingleChatPageState extends State<SingleChatPage> {
             ListView(),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Row(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width - 60,
-                    child: Card(
-                      margin:
-                          const EdgeInsets.only(left: 5, right: 5, bottom: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: TextFormField(
-                        textAlignVertical: TextAlignVertical.center,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        minLines: 1,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Nachricht",
-                          prefixIcon: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.emoji_emotions),
+                  Row(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width - 60,
+                        child: Card(
+                          margin: const EdgeInsets.only(
+                              left: 5, right: 5, bottom: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
                           ),
-                          suffixIcon: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.attach_file),
+                          child: TextFormField(
+                            controller: _controller,
+                            focusNode: focusNode,
+                            textAlignVertical: TextAlignVertical.center,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 5,
+                            minLines: 1,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Nachricht",
+                              prefixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    focusNode.unfocus();
+                                    showEmojis = !showEmojis;
+                                  });
+                                },
+                                icon: const Icon(Icons.emoji_emotions),
                               ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.camera_alt),
+                              suffixIcon: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.attach_file),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.camera_alt),
+                                  ),
+                                ],
                               ),
-                            ],
+                              contentPadding: const EdgeInsets.only(left: 5),
+                            ),
                           ),
-                          contentPadding:
-                              const EdgeInsets.only(left: 5, bottom: 5),
                         ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.teal,
+                          child: IconButton(
+                            onPressed: () {
+                              print("microphone");
+                            },
+                            icon: const Icon(Icons.mic,
+                                size: 25, color: Colors.white),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Colors.teal,
-                      child: IconButton(
-                        onPressed: () {
-                          print("microphone");
-                        },
-                        icon: const Icon(Icons.mic,
-                            size: 25, color: Colors.white),
-                      ),
-                    ),
-                  )
+                  showEmojis ? selectEmoji() : const SizedBox()
                 ],
               ),
             ),
@@ -180,6 +203,19 @@ class _SingleChatPageState extends State<SingleChatPage> {
           const SizedBox(width: 3),
         ],
       ),
+    );
+  }
+
+  Widget selectEmoji() {
+    return EmojiPicker2(
+      rows: 3,
+      columns: 7,
+      onEmojiSelected: (emoji, category) {
+        print(emoji);
+        setState(() {
+          _controller.text += emoji.emoji;
+        });
+      },
     );
   }
 }

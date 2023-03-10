@@ -1,16 +1,20 @@
 # whatsapp_clone
 
-A new Flutter project.
+Problem:
+"Cannot run with sound null safety, because the following dependencies don't support null safety: emoji-picker-2..."
 
-## Getting Started
+The problem happens because the Flutter framework (version 2.2.0 and up) is now supporting sound null safety out of the box, but there are plenty of package and plugins on pub.dev are not migrated to null safety yet, so that's raising the error whenever you run a build or run command.
 
-This project is a starting point for a Flutter application.
+Solutions:
+in vscode go to
+file -> preferences -> settings -> search for "Flutter run addional args" -> addItem
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+"--no-sound-null-safety"
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+or start your project in the console with:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+flutter run --no-sound-null-safety
+```
