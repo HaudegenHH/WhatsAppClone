@@ -171,7 +171,7 @@ class _SingleChatPageState extends State<SingleChatPage> {
                 size: 20,
               ),
             ),
-            widget.chat.isGroup
+            widget.chat.isGroup!
                 ? const ClipOval(
                     child: Material(
                       color: Colors.blueGrey,
@@ -181,7 +181,7 @@ class _SingleChatPageState extends State<SingleChatPage> {
                       ),
                     ),
                   )
-                : widget.chat.name.startsWith("+")
+                : widget.chat.name!.startsWith("+")
                     ? const ClipOval(
                         child: Material(
                           color: Colors.blueGrey,
@@ -193,7 +193,7 @@ class _SingleChatPageState extends State<SingleChatPage> {
                       )
                     : ClipOval(
                         child: Image.network(
-                          widget.chat.imgUrl,
+                          widget.chat.imgUrl!,
                           width: 35,
                           height: 35,
                           fit: BoxFit.cover,
@@ -205,7 +205,7 @@ class _SingleChatPageState extends State<SingleChatPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.chat.name,
+              widget.chat.name!,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 16),
             ),

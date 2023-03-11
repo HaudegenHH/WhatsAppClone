@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:whatsapp_clone/models/contact_model.dart';
 
 class ContactCard extends StatelessWidget {
   final Icon icon;

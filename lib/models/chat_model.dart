@@ -1,16 +1,23 @@
-class ChatModel {
-  final String name;
-  final String imgUrl;
-  final bool isGroup;
-  final String time;
-  final bool isRead;
-  final String currentMessage;
+import 'package:flutter/material.dart';
 
-  ChatModel(
-      {required this.name,
-      required this.imgUrl,
-      required this.isGroup,
-      required this.currentMessage,
-      required this.isRead,
-      required this.time});
+class ChatModel {
+  final String? name;
+  final String? imgUrl;
+  final bool? isGroup;
+  final String? time;
+  final bool? isRead;
+  final String? currentMessage;
+  final IconData? icon;
+  final bool? savedContacts;
+
+  ChatModel({
+    this.name,
+    this.imgUrl,
+    this.currentMessage,
+    this.isRead,
+    this.time,
+    this.isGroup,
+    this.icon,
+    this.savedContacts,
+  });
 }

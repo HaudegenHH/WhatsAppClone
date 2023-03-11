@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/widgets/contact_card.dart';
-//import 'package:whatsapp_clone/helpers/contacts_list.dart';
+import 'package:whatsapp_clone/helpers/contacts_list.dart';
+import 'package:whatsapp_clone/widgets/custom_card.dart';
 
 class SelectContactPage extends StatefulWidget {
   const SelectContactPage({super.key});
@@ -85,8 +86,21 @@ class _SelectContactPageState extends State<SelectContactPage> {
             padding: EdgeInsets.all(8.0),
             child: Text("Kontakte auf WhatsApp"),
           ),
-          //buildContactList(contacts)
+          buildContactList(contacts),
         ],
+      ),
+    );
+  }
+
+  Widget buildContactList(contacts) {
+    return SingleChildScrollView(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: contacts.length,
+        itemBuilder: (context, index) {
+          final contact = contacts[index];
+          return CustomCard(chat: contact);
+        },
       ),
     );
   }
