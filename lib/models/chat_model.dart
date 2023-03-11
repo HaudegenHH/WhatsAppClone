@@ -9,6 +9,7 @@ class ChatModel {
   final String? currentMessage;
   final IconData? icon;
   final bool? savedContacts;
+  bool selected;
 
   ChatModel({
     this.name,
@@ -19,5 +20,6 @@ class ChatModel {
     this.isGroup,
     this.icon,
     this.savedContacts,
+    this.selected = false,
   });
 }
