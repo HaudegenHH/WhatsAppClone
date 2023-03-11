@@ -39,26 +39,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         IconButton(icon: const Icon(Icons.search), onPressed: () {}),
         const SizedBox(width: 15),
         PopupMenuButton<String>(
-            onSelected: (value) {
-              print(value);
-            },
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem(
-                    value: "new group", child: Text("Neue Gruppe")),
-                const PopupMenuItem(
-                    value: "new bc", child: Text("Neuer Broadcast")),
-                const PopupMenuItem(
-                    value: "connected devices",
-                    child: Text("Verknüpfte Geräte")),
-                const PopupMenuItem(
-                    value: "marked with star",
-                    child: Text("Mit Stern markiert")),
-                const PopupMenuItem(
-                    value: "settings", child: Text("Einstellungen")),
-              ];
-            },
-            icon: const Icon(Icons.more_vert)),
+          onSelected: (value) {
+            print(value);
+          },
+          itemBuilder: (context) {
+            return [
+              const PopupMenuItem(
+                  value: "new group", child: Text("Neue Gruppe")),
+              const PopupMenuItem(
+                  value: "new bc", child: Text("Neuer Broadcast")),
+              const PopupMenuItem(
+                  value: "connected devices", child: Text("Verknüpfte Geräte")),
+              const PopupMenuItem(
+                  value: "marked with star", child: Text("Mit Stern markiert")),
+              const PopupMenuItem(
+                  value: "settings", child: Text("Einstellungen")),
+            ];
+          },
+          icon: const Icon(Icons.more_vert),
+        ),
         const SizedBox(width: 15),
       ],
       bottom: TabBar(

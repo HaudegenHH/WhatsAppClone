@@ -226,16 +226,50 @@ class _SingleChatPageState extends State<SingleChatPage> {
           IconButton(
             onPressed: () {},
             icon: const Icon(
-              Icons.phone,
+              Icons.call,
               size: 20,
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.more_vert,
-              size: 20,
-            ),
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              print(value);
+            },
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                  value: "view contact",
+                  child: Text("Kontakt ansehen"),
+                ),
+                const PopupMenuItem(
+                  value: "Media, Links and docs",
+                  child: Text("Media, Links und Doks"),
+                ),
+                const PopupMenuItem(
+                  value: "Search",
+                  child: Text("Suchen"),
+                ),
+                const PopupMenuItem(
+                  value: "Mute Notification",
+                  child: Text("Benachrichtung stummschalten"),
+                ),
+                const PopupMenuItem(
+                  value: "Self deleting messages",
+                  child: Text("Selbstlöschende Nachrichten"),
+                ),
+                const PopupMenuItem(
+                  value: "Wallpaper",
+                  child: Text("Hintergrund"),
+                ),
+                const PopupMenuItem(
+                  value: "More",
+                  child: ListTile(
+                    title: Text("Mehr"),
+                    trailing: Text("\u{25B6}"),
+                  ),
+                ),
+              ];
+            },
+            icon: const Icon(Icons.more_vert),
           ),
           const SizedBox(width: 3),
         ],
